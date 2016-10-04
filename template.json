@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "region": "us-west-2",
+    "image": "ami-e8419c88",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "image_name": "Ubuntu 14.04 LTS"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "{{user `region`}}",
+      "source_ami": "{{user `image`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_timeout": "10m",
+      "ssh_pty": true,
+      "ami_name": "{{user `image_name`}} {{user `image`}} {{isotime \"2006-01-02 03-04-05\"}}",
+      "tags": {
+        "Name": "{{user `image_name`}}_{{isotime \"2006-01-02\"}}",
+        "Packer": "true"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get update"
+      ]
+    }
+  ]
+}
